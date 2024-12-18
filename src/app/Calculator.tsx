@@ -5,7 +5,7 @@ import '../../styles/globals.css'; // Adjust the path if needed
 
 export default function Calculator() {
 
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState('0');
   const [error, setError] = useState<string | null>("");
   const minLength = 3;
   const maxLength = 11;
@@ -25,6 +25,7 @@ export default function Calculator() {
 
     switch (value) {
       case 'C':
+      case 'Delete':
         setInput(''); // Clear the input
         break;
 
@@ -106,7 +107,7 @@ export default function Calculator() {
   // keyboard support
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      if (/[\d+\-*/.%]|Enter|Backspace/.test(e.key)) {
+      if (/[\d+\-*/.%]|Enter|Backspace|Delete/.test(e.key)) {
         handleButtonClick(e.key);
       }
     };
