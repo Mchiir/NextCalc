@@ -18,9 +18,9 @@ export default function Calculator() {
   const handleButtonClick = (value: string) => {
     setError(null); // Clear any existing error messages
 
-    if (input.length >= maxLength) {
-      setError(`Input cannot exceed ${maxLength} characters.`);
-      return;
+    if (input.length > maxLength) {
+      setError(`Input cannot exceed ${maxLength} characters.`)
+      return
     }
 
     switch (value) {
