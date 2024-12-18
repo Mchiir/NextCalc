@@ -63,6 +63,7 @@ export default function Calculator() {
       setError('Invalid expression');
       return;
     }
+    setInput("")
 
     try {
       const response = await fetch('/api/calculate', {
