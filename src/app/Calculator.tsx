@@ -6,10 +6,10 @@ import '../../styles/globals.css'; // Adjust the path if needed
 export default function Calculator() {
 
   const [input, setInput] = useState('0');
-  const [error, setError] = useState<string | null>("");
+  const [error, setError] = useState<string | null>(null); // Correctly initialize state to null
   const minLength = 3;
   const maxLength = 11;
-  
+
   const padInput = (input: string): string => {
     // Ensure the input has a minimum length of 3 by padding with spaces
     return input.length >= minLength ? input : input.padEnd(minLength, '');
@@ -19,7 +19,7 @@ export default function Calculator() {
     setError(null); // Clear any existing error messages
 
     if (input.length >= maxLength) {
-      setError(`Input cannot exceed ${maxLength} characters.`)
+      setError(`Input cannot exceed ${maxLength} characters.`);
       return;
     }
 
@@ -31,7 +31,7 @@ export default function Calculator() {
 
       case '=':
       case 'Enter':
-        calculateResult()
+        calculateResult();
         break;
 
       case '±':
@@ -75,7 +75,7 @@ export default function Calculator() {
 
       const data = await response.json();
       if (response.ok) {
-        let result = data.result.toString()
+        let result = data.result.toString();
 
         if (result.length > maxLength) {
           result = result.slice(0, maxLength); // Trim the result to maxLength
@@ -86,6 +86,7 @@ export default function Calculator() {
       }
     } catch (error) {
       setError('An error occurred while calculating');
+      console.error(error);
     }
   };
 
@@ -104,7 +105,7 @@ export default function Calculator() {
     return [null, null, null];
   };
 
-  // keyboard support
+  // Keyboard support
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (/[\d+\-*/.%]|Enter|Backspace|Delete/.test(e.key)) {
@@ -114,19 +115,11 @@ export default function Calculator() {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress); // Cleanup
-  }, []);
-
-  const buttons = [
-    'C', '±', '%', '×',
-    '7', '8', '9', '-',
-    '4', '5', '6', '+',
-    '1', '2', '3', '=',
-    '0', '.', '',
-  ];
+  }, [handleButtonClick]); // Add handleButtonClick to the dependency array
 
   return (
     <div className="calculator-wrapper">
-     <p className="error">{error}</p>
+      <p className="error">{error}</p>
       <section className='calculator-container'>
         <div className="display">{input || '0'}</div>
         <div className="calculator">
